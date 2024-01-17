@@ -31,7 +31,7 @@ export class GameObject {
     }
 }
 
-let last_timestamp; // 上一次执行的时间
+let last_timestamp = 0; // 上一次执行的时间
 const step = (timestamp) => {
 
     for (let obj of GAME_OBJECTS) {
@@ -41,10 +41,10 @@ const step = (timestamp) => {
         } else {
             obj.timedelte = timestamp - last_timestamp;
             obj.update();
+            
         }
     }
-
-    last_timestamp = timestamp;
+    last_timestamp = timestamp++;
     requestAnimationFrame(step);
 }
 
