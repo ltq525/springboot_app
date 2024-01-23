@@ -50,8 +50,7 @@ export class Snake extends GameObject {
     }
 
     check_tail_increasing() { // 检查蛇长度是否增加
-        if (this.step <= 10)    return true;
-        if (this.step % 3 === 1)    return true;
+        if (this.step % 2 === 1)    return true;
         return false;
     }
 
