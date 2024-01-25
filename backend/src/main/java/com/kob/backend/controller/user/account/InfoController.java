@@ -10,7 +10,7 @@ import java.util.Map;
 @RestController
 public class InfoController {
 
-    @Autowired
+    @Autowired //自动配置构造方法
     private InfoService infoService;
 
     @GetMapping("/user/account/info/")

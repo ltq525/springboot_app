@@ -25,29 +25,29 @@ public class RegisterServiceImpl implements RegisterService {
     public Map<String, String> register(String username, String password, String confirmedPassword) {
         Map<String, String> map = new HashMap<>();
         if (username == null) {
-            map.put("error_message", "用户名 不能为空");
+            map.put("message", "用户名不能为空");
         } else if (password == null || confirmedPassword == null) {
-            map.put("error_message", "密码不能为空");
+            map.put("message", "密码不能为空");
         } else {
             username = username.trim();
             password = password.trim();
             confirmedPassword = confirmedPassword.trim();
             if (username.isEmpty()) {
-                map.put("error_message", "用户名不能为空");
+                map.put("message", "用户名不能为空");
             } else if (username.length() > 100) {
-                map.put("error_message", "用户名不能大于100");
+                map.put("message", "用户名不能大于100");
             } else if (password.isEmpty() || confirmedPassword.isEmpty()) {
-                map.put("error_message", "密码不能为空");
+                map.put("message", "密码不能为空");
             } else if (password.length() > 100 || confirmedPassword.length() > 100) {
-                map.put("error_message", "密码不能大于100");
+                map.put("message", "密码不能大于100");
             } else if (!password.equals(confirmedPassword)) {
-                map.put("error_message", "两次输入的密码不一致");
+                map.put("message", "两次输入的密码不一致");
             } else {
                 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
                 queryWrapper.eq("username", username);
                 List<User> users = userMapper.selectList(queryWrapper);
                 if (!users.isEmpty()) {
-                    map.put("error", "用户名已存在");
+                    map.put("message", "用户名已存在");
                     return map;
                 }
 
@@ -55,7 +55,7 @@ public class RegisterServiceImpl implements RegisterService {
                 String photo = "https://ltq525.github.io/site/logo/xianzi.png";
                 User user = new User(null, username, encodePassword, photo);
                 userMapper.insert(user);
-                map.put("error_message", "success");
+                map.put("message", "success");
 
             }
         }

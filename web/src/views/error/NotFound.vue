@@ -1,5 +1,5 @@
 <template>
-    <ContentField>404</ContentField>
+    <ContentField>404 Not Found</ContentField>
 </template>
 
 <script>
