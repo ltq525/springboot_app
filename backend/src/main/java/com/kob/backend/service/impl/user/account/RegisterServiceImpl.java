@@ -32,6 +32,7 @@ public class RegisterServiceImpl implements RegisterService {
             username = username.trim();
             password = password.trim();
             confirmedPassword = confirmedPassword.trim();
+
             if (username.isEmpty()) {
                 map.put("message", "用户名不能为空");
             } else if (username.length() > 100) {
