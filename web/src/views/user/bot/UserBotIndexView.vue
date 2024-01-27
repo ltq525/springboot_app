@@ -41,8 +41,8 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="add-bot-code" class="form-label">代码</label>
-                                            <VAceEditor v-model:value="addbot.content" lang="c_cpp" theme="textmate"
-                                                style="height: 300px"  />
+                                            <VAceEditor v-model:value="addbot.content" lang="markdown" theme="textmate"
+                                                style="height: 300px" />
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -97,8 +97,8 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="add-bot-code" class="form-label">代码</label>
-                                                            <VAceEditor v-model:value="bot.content" lang="c_cpp"
-                                                                theme="textmate" style="height: 300px" />
+                                                            <VAceEditor v-model:value="bot.content" lang="java"
+                                                                theme="textmate" style="height: 500px" />
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -132,17 +132,20 @@ import { useStore } from 'vuex';
 import { Modal } from 'bootstrap/dist/js/bootstrap';
 
 import { VAceEditor } from 'vue3-ace-editor';
-import ace from "ace-builds";
+// import ace from "ace-builds";
 import 'ace-builds/src-noconflict/mode-c_cpp';
+import 'ace-builds/src-noconflict/mode-java';
+import 'ace-builds/src-noconflict/mode-markdown';
+
 
 export default {
     components: {
         VAceEditor,
     },
     setup() {
-        ace.config.set(
-            "basePath",
-            "https://cdn.jsdelivr.net/npm/ace-builds@" + require('ace-builds').version + "/src-noconflict/")
+        // ace.config.set(
+        //     "basePath",
+        //     "https://cdn.jsdelivr.net/npm/ace-builds@" + require('ace-builds').version + "/src-noconflict/")
 
 
         const store = useStore();
@@ -290,5 +293,4 @@ button {
 
 VAceEditor {
     font-size: 200%;
-}
-</style>
+}</style>

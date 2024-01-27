@@ -4,16 +4,18 @@ import { Snake } from "./Snake";
 import { Wall } from "./Wall"
 
 export class GameMap extends GameObject {
-    constructor(ctx, parent) {
+    constructor(ctx, parent, store) {
         super();
         this.ctx = ctx;
         this.parent = parent;
-        this.L = 0; // 13个单位格子的长度
+
+        this.store = store;
+        this.L = 0;
 
         this.rows = 13;
         this.cols = 14;
-
-        this.inner_wall_count = 20;
+        
+        this.inner_walls_count = 20;
         this.walls = [];
 
         this.snakes = [
@@ -23,52 +25,8 @@ export class GameMap extends GameObject {
 
     }
 
-    check_connectivity(g, sx, sy, tx, ty) {
-        if (sx == tx && tx == tx) return true;
-        g[sx][sy] = true;
-
-        let dx = [-1, 0, 1, 0], dy = [0, 1, 0, -1];
-        for (let i = 0; i < 4; i++) {
-            let x = sx + dx[i], y = sy + dy[i];
-            if (!g[x][y] && this.check_connectivity(g, x, y, tx, ty)) return true;
-        }
-
-        return false;
-    }
-
     create_walls() {
-        const g = [];
-        for (let r = 0; r < this.rows; r++) {
-            g[r] = [];
-            for (let c = 0; c < this.cols; c++) {
-                g[r][c] = false;
-            }
-        }
-
-        for (let r = 0; r < this.rows; r++) {
-            g[r][0] = g[r][this.cols - 1] = true;
-        }
-
-        for (let c = 0; c < this.cols; c++) {
-            g[0][c] = g[this.rows - 1][c] = true;
-        }
-
-        for (let i = 0; i < this.inner_wall_count / 2; i++) {
-            for (let j = 0; j < 1000; j++) {
-                // 随机 1 ~ this.rows - 1
-                let r = parseInt(Math.random() * (this.rows - 1)) + 1;
-                let c = parseInt(Math.random() * (this.cols - 1)) + 1;
-                if (g[r][c] || g[this.rows - 1 - r][this.cols - 1 - c]
-                    || (r === 1 && c == this.cols - 2)
-                    || (r === this.rows - 2 && c === 1)) continue;
-                g[r][c] = g[this.rows - 1 - r][this.cols - 1 - c] = true;
-                break;
-            }
-        }
-
-        const copy_g = JSON.parse(JSON.stringify(g));
-        if (!this.check_connectivity(copy_g, this.rows - 2, 1, 1, this.cols - 2)) return false;
-
+        const g = this.store.state.pk.game_map;
         for (let r = 0; r < this.rows; r++) {
             for (let c = 0; c < this.cols; c++) {
                 if (g[r][c]) {
@@ -76,7 +34,6 @@ export class GameMap extends GameObject {
                 }
             }
         }
-        return true;
     }
 
     add_listening_events() {
@@ -95,10 +52,7 @@ export class GameMap extends GameObject {
     }
 
     start() { // 创建对象
-        for (let i = 0; i < 1000; i++) {
-            if (this.create_walls())
-                break;
-        }
+        this.create_walls();
 
         this.add_listening_events();
     }
@@ -111,8 +65,7 @@ export class GameMap extends GameObject {
 
     check_ready() {
         for (const sanke of this.snakes) {
-            if (sanke.status === "move") return false;
-            else if (sanke.status === "idle") return true;
+            if (sanke.status !== "idle") return false;
             if (sanke.direction === -1) return false;
         }
         return true;
