@@ -18,7 +18,10 @@ export default {
         
         // 服务器在渲染期间不会调用此函数
         onMounted(() => {
-            new GameMap(canvas.value.getContext('2d'), parent.value, store);
+            store.commit(
+                "updateGameObject",
+                new GameMap(canvas.value.getContext('2d'), parent.value, store)
+            );
         });
 
         return {
