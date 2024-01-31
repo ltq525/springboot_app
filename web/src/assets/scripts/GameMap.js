@@ -46,7 +46,7 @@ export class GameMap extends GameObject {
             else if (e.key === 'a') d = 3;
             else if (e.key === 'ArrowUp') d = 0;
             else if (e.key === 'ArrowRight') d = 1;
-            else if (e.key === 'ArrowDown') d - 2;
+            else if (e.key === 'ArrowDown') d = 2;
             else if (e.key === 'ArrowLeft') d = 3;
 
             if (d >= 0) {

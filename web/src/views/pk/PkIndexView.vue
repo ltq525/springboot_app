@@ -35,6 +35,7 @@ export default {
                 store.commit("updateSocket", socket);
             }
             socket.onmessage = (msg) => {
+                console.log(msg);
                 const data = JSON.parse(msg.data);
                 if (data.event === "matching-success") {  // 匹配成功
                     console.log("matching-success!");
@@ -44,7 +45,7 @@ export default {
                     });
                     setTimeout(() => {
                         store.commit("updateStatus", "playing");
-                    }, 1000);
+                    }, 300);
 
                     store.commit("updateGame", data.game);
                 } else if (data.event === "move") {
@@ -75,6 +76,7 @@ export default {
 
         onUnmounted(() => {
             socket.close(); 
+            store.commit("updateLoser", "none");
             store.commit("updateStatus", "matching");
         })
     }
