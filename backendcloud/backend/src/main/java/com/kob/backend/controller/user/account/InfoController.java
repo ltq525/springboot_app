@@ -13,7 +13,7 @@ public class InfoController {
     @Autowired //自动配置构造方法
     private InfoService infoService;
 
-    @GetMapping("/user/account/info/")
+    @GetMapping("/api/user/account/info/")
     public Map<String, String> getinfo() {
         return infoService.getinfo();
     }

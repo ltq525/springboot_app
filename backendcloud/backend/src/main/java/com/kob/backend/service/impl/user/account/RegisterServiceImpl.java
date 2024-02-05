@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -53,8 +54,11 @@ public class RegisterServiceImpl implements RegisterService {
                 }
 
                 String encodePassword = passwordEncoder.encode(password);
-                String photo = "https://ltq525.github.io/site/logo/xianzi.png";
-                User user = new User(null, username, encodePassword, photo, 1500);
+
+                String[] photo = {"https://ltq525.github.io/site/logo/%E9%B3%84%E9%B1%BC.png", "https://ltq525.github.io/site/logo/%E7%8B%90%E7%8B%B8.png"};
+                Random random = new Random();
+
+                User user = new User(null, username, encodePassword, photo[random.nextInt(2)], 1500, null);
                 userMapper.insert(user);
                 map.put("message", "success");
 

@@ -41,7 +41,14 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/account/token/", "/user/account/register/").permitAll() //公开
+                .antMatchers(
+                        "/api/user/account/token/",
+                        "/api/user/account/register/",
+                        "/api/user/account/acwing/app/apply_code/",
+                        "/api/user/account/acwing/app/receive_code/",
+                        "/api/user/account/acwing/web/apply_code/",
+                        "/api/user/account/acwing/web/receive_code/"
+                ).permitAll() //公开
                 .antMatchers("/pk/start/game/", "/pk/receive/bot/move/").hasIpAddress("127.0.0.1")
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated();

@@ -1,15 +1,17 @@
 package com.kob.botrunningsystem.service.impl.utils;
 
-import com.kob.botrunningsystem.utils.BotInterface;
 import org.joor.Reflect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 @Component
 public class Consumer extends Thread {
@@ -39,7 +41,7 @@ public class Consumer extends Thread {
     }
 
     private String addUid(String code, String uid) {
-        int k = code.indexOf(" implements BotInterface");
+        int k = code.indexOf(" implements java.util.function.Supplier<Integer>");
         return code.substring(0, k) + uid + code.substring(k);
     }
 
@@ -47,12 +49,20 @@ public class Consumer extends Thread {
     public void run() { // 编译代码 可使用docker方法来替换
         UUID uuid = UUID.randomUUID();
         String uid = uuid.toString().substring(0, 8);
-        BotInterface botInterface = Reflect.compile(
+        Supplier<Integer> botInterface = Reflect.compile(
                  "com.kob.botrunningsystem.utils.Bot" + uid,
                 addUid(bot.getBotCode(), uid)
         ).create().get();
 
-        Integer direction = botInterface.nextMove(bot.getInput());
+        File file = new File("input.txt");
+        try (PrintWriter fout = new PrintWriter(file)) {
+            fout.println(bot.getInput());
+            fout.flush();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        Integer direction = botInterface.get();
         System.out.println("move-direction: userid " + bot.getUserId() + " direction " + direction);
 
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();

@@ -14,7 +14,7 @@ public class GetListController {
     private GetListService getListService;
 
     // 查询数据无需修改使用get即可
-    @GetMapping("/user/bot/getlist/")
+    @GetMapping("/api/user/bot/getlist/")
     public List<Bot> getlist() {
         return getListService.getList();
     }

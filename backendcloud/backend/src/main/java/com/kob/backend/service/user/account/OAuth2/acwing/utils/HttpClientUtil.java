@@ -1,0 +1,38 @@
+package com.kob.backend.service.user.account.OAuth2.acwing.utils;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.List;
+
+// 作用: 向外部目标url带params参数发送请求，然后返回信息 代替restTemplate: 主要用于内部通信
+public class HttpClientUtil {
+    public static String get(String url, List<NameValuePair> params) {
+        URIBuilder uriBuilder = null;
+        try {
+            uriBuilder = new URIBuilder(url);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+        uriBuilder.setParameters(params);
+
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpGet httpGet = new HttpGet(uriBuilder.build());
+            CloseableHttpResponse response = client.execute(httpGet);
+            HttpEntity entity = response.getEntity();
+            return EntityUtils.toString(entity);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
